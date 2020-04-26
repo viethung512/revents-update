@@ -1,29 +1,30 @@
 import React from 'react';
+
+import { useFirestoreConnect } from 'react-redux-firebase';
+
 import { List } from 'antd';
 import EventListItem from './EventListItem';
-
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+import { useSelector } from 'react-redux';
+import { objectToArray } from '../../../app/util/helper';
 
 function EventList(props) {
+  const events = useSelector(({ firestore: { data } }) =>
+    data.events ? objectToArray(data.events) : []
+  );
+
+  useFirestoreConnect({
+    collection: 'events',
+    storeAs: 'events',
+  });
+
+  const loading = events.length > 0 ? false : true;
   return (
     <List
-      style={{ backgroundColor: '#fff' }}
       itemLayout='horizontal'
-      dataSource={data}
-      renderItem={item => <EventListItem event={item} />}
+      dataSource={events}
+      renderItem={event => <EventListItem event={event} />}
+      grid={{ gutter: 16, column: 1 }}
+      loading={loading}
     />
   );
 }

@@ -9,6 +9,9 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { store, rrfProps } from './app/redux/configureStore';
 
+// react router setup
+import { BrowserRouter } from 'react-router-dom';
+
 // react redux firestore setup
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 
@@ -17,9 +20,11 @@ const rootEl = document.getElementById('root');
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <App />
-      </ReactReduxFirebaseProvider>
+      <BrowserRouter>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <App />
+        </ReactReduxFirebaseProvider>
+      </BrowserRouter>
     </Provider>,
     rootEl
   );
