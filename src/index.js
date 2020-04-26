@@ -1,15 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import App from './app/layout/App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// redux setup
+import { Provider } from 'react-redux';
+import { store, rrfProps } from './app/redux/configureStore';
+
+// react redux firestore setup
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+
+const rootEl = document.getElementById('root');
+
+const render = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
+    </Provider>,
+    rootEl
+  );
+};
+
+if (module.hot) {
+  module.hot.accept('./app/layout/App', () => {
+    setTimeout(render);
+  });
+}
+
+render();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
