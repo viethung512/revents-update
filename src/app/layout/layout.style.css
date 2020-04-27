@@ -1,0 +1,9 @@
+.add-event-mobile {
+  display: none;
+}
+
+@media (max-width: 750px) {
+  .add-event-mobile {
+    display: block;
+  }
+}

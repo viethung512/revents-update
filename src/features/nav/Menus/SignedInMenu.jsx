@@ -10,9 +10,9 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 
-function SignedInMenu({ logout }) {
+function SignedInMenu({ logout, className }) {
   const menu = () => (
-    <Menu>
+    <Menu className={className} >
       <Menu.Item key='1'>
         <PlusOutlined />
         Create Event

@@ -4,7 +4,7 @@ import { Link } from '../../../app/layout/common/CustomRouter';
 
 function MenuActions(props) {
   return (
-    <Link to='/events/create'>
+    <Link to='/event/create' {...props}>
       <Button
         size='large'
         className='btn'

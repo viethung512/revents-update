@@ -1,33 +1,39 @@
 import React, { Fragment } from 'react';
-import { List, Avatar, Card, Typography, Divider, Button } from 'antd';
+import './style.css';
+import { List, Avatar, Card, Typography, Button } from 'antd';
 
 import { ClockCircleFilled, EnvironmentFilled } from '@ant-design/icons';
 import IconText from '../../../app/layout/common/IconText';
 import { Link } from '../../../app/layout/common/CustomRouter';
 import { objectToArray } from '../../../app/util/helper';
+import { format } from 'date-fns';
 
 const { Title, Text } = Typography;
 
 function EventListItem({ event }) {
   const {
     attendees,
-    category,
-    city,
     date,
     description,
     hostPhotoURL,
     hostedBy,
-    id,
     title,
-    venue,
+    venue
   } = event;
 
   const attendeesData = objectToArray(attendees);
 
   return (
     <List.Item>
-      <Card bordered style={{ width: '100%', borderRadius: 8 }}>
+      <Card
+        bordered
+        className='event'
+        bodyStyle={{
+          padding: 0
+        }}
+      >
         <Card.Meta
+          className='event__header'
           avatar={<Avatar size={80} src={hostPhotoURL || '/assets/user.png'} />}
           title={
             <Link to='/event/:id'>
@@ -43,14 +49,19 @@ function EventListItem({ event }) {
             </span>
           }
         />
-        <Divider />
         <Card.Meta
+          className='event__description'
           description={
             <Fragment>
               <span style={{ marginRight: 12 }}>
                 <IconText
                   icon={<ClockCircleFilled />}
-                  label='Monday 27th Apr at 6:00 AM'
+                  label={
+                    <span>
+                      <span>{format(date.toDate(), 'EEEEEE do MMM')}</span> at{' '}
+                      <span>{format(date.toDate(), 'aa')}</span>
+                    </span>
+                  }
                 />
               </span>
               |
@@ -60,8 +71,8 @@ function EventListItem({ event }) {
             </Fragment>
           }
         />
-        <Divider />
         <Card.Meta
+          className='event__attendees'
           description={
             attendees &&
             attendeesData.length > 0 &&
@@ -73,16 +84,15 @@ function EventListItem({ event }) {
               />
             ))
           }
-          style={{ backgroundColor: '#f3f4f5' }}
         />
-        <Divider />
         <Card.Meta
+          className='event__action'
           description={
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <Text type='secondary'>{description}</Text>
@@ -93,7 +103,7 @@ function EventListItem({ event }) {
                   style={{
                     backgroundColor: '#52B6AD',
                     outline: 'none',
-                    border: 'none',
+                    border: 'none'
                   }}
                 >
                   View

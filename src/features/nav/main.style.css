@@ -26,7 +26,7 @@
   display: none;
 }
 
-.header__menu {
+.header__left-menubar {
   background-color: transparent;
   color: white;
   margin-left: 16px;
@@ -68,5 +68,21 @@
 @media (max-width: 750px) {
   .header {
     padding: 0 24px;
+  }
+
+  .header__left-menubar {
+    display: none;
+  }
+
+  .header__left-actions {
+    display: none;
+  }
+
+  .header__right {
+    display: none;
+  }
+
+  .menu-mobile {
+    display: block;
   }
 }

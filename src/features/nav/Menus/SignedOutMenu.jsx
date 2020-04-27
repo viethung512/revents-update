@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Button } from 'antd';
 
-function SignedOutMenu({ login }) {
+function SignedOutMenu({ login, className }) {
   return (
-    <Fragment>
+    <div className={className}>
       <Button
         size='large'
         className='btn'
@@ -15,7 +15,7 @@ function SignedOutMenu({ login }) {
       <Button size='large' className='btn'>
         Register
       </Button>
-    </Fragment>
+    </div>
   );
 }
 

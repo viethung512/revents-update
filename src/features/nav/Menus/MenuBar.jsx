@@ -7,7 +7,7 @@ function MenuBar(props) {
     <Menu
       mode='horizontal'
       defaultSelectedKeys={['1']}
-      className='header__menu'
+      {...props}
     >
       <Menu.Item key='1'>
         <NavLink to='/event'>Events</NavLink>

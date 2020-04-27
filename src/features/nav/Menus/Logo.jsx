@@ -3,7 +3,7 @@ import { NavLink } from '../../../app/layout/common/CustomRouter';
 
 function Logo(props) {
   return (
-    <NavLink to='/'>
+    <NavLink to='/' {...props} >
       <img
         src='/assets/logo.png'
         alt='logo'
