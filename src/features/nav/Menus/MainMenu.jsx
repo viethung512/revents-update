@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Menu, Button } from 'antd';
 import { NavLink, Link } from '../../../app/layout/common/CustomRouter';
+import Logo from './Logo';
 
 function MainMenu({ authenticated }) {
   return (
@@ -11,17 +12,7 @@ function MainMenu({ authenticated }) {
         className='header__menu'
       >
         <Menu.Item key='1' style={{ fontWeight: 700 }}>
-          <NavLink to='/'>
-            <img
-              src='/assets/logo.png'
-              alt='logo'
-              style={{
-                height: 40,
-                marginRight: 16,
-              }}
-            />
-            Revents
-          </NavLink>
+          <Logo />
         </Menu.Item>
         <Menu.Item>
           <NavLink to='/event'>Events</NavLink>

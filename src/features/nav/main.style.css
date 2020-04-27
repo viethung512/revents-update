@@ -1,14 +1,15 @@
 .header {
   background-color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-image: linear-gradient(
     135deg,
     rgb(24, 42, 115) 0%,
     rgb(33, 138, 174) 69%,
     rgb(32, 167, 172) 89%
   );
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .header__left {
@@ -17,18 +18,23 @@
   align-items: center;
 }
 
+.header__right {
+  padding-right: 24px;
+}
+
+.menu-mobile {
+  display: none;
+}
+
 .header__menu {
   background-color: transparent;
   color: white;
+  margin-left: 16px;
 }
 
 .header__auth {
   display: flex;
   align-items: center;
-}
-
-.header__right {
-  padding-right: 24px;
 }
 
 .ant-menu-item-selected {
@@ -57,4 +63,10 @@
 .btn:focus {
   background-color: transparent;
   color: #fff;
+}
+
+@media (max-width: 750px) {
+  .header {
+    padding: 0 24px;
+  }
 }
