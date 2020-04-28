@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Drawer, Typography, Menu, Button, Avatar, Divider } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Menu, Button, Avatar, Divider } from 'antd';
 import {
   PlusOutlined,
   CalendarFilled,
@@ -8,12 +9,14 @@ import {
   SettingFilled,
   LogoutOutlined
 } from '@ant-design/icons';
+import { logout, login } from '../../auth/auth.actions';
 
 const { SubMenu } = Menu;
 
-const title = <Typography level={3}>REVENTS</Typography>;
+function MenuMobile(props) {
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector(state => state.auth);
 
-function MenuMobile({ onClose, visible, authenticated, login, logout }) {
   const authArea = authenticated ? (
     <Menu>
       <SubMenu
@@ -50,7 +53,7 @@ function MenuMobile({ onClose, visible, authenticated, login, logout }) {
           <SettingFilled />
           Settings
         </Menu.Item>
-        <Menu.Item key='6' onClick={logout}>
+        <Menu.Item key='6' onClick={() => dispatch(logout())}>
           <LogoutOutlined />
           Sign Out
         </Menu.Item>
@@ -65,7 +68,11 @@ function MenuMobile({ onClose, visible, authenticated, login, logout }) {
         alignItems: 'center'
       }}
     >
-      <Button size='large' style={{ flex: '1' }} onClick={login}>
+      <Button
+        size='large'
+        style={{ flex: '1' }}
+        onClick={() => dispatch(login())}
+      >
         Login
       </Button>
       <Button size='large' style={{ flex: '1' }}>
@@ -74,21 +81,14 @@ function MenuMobile({ onClose, visible, authenticated, login, logout }) {
     </div>
   );
   return (
-    <Drawer
-      title={title}
-      placement='right'
-      closable={false}
-      onClose={onClose}
-      visible={visible}
-      bodyStyle={{ paddingLeft: 0 }}
-    >
+    <Fragment>
       {authArea}
       <Divider />
       <Menu style={{ width: 256 }} mode='inline'>
         <Menu.Item key='events'>Events</Menu.Item>
         <Menu.Item key='people'>People</Menu.Item>
       </Menu>
-    </Drawer>
+    </Fragment>
   );
 }
 

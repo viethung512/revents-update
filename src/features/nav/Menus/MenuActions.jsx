@@ -1,18 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from 'antd';
-import { Link } from '../../../app/layout/common/CustomRouter';
+import { openDrawer } from '../../drawer/drawer.actions';
 
-function MenuActions(props) {
+function MenuActions({ className }) {
+  const dispatch = useDispatch();
+
   return (
-    <Link to='/event/create' {...props}>
-      <Button
-        size='large'
-        className='btn'
-        style={{ backgroundColor: 'rgba(33, 186, 69, 1)' }}
-      >
-        Create Event
-      </Button>
-    </Link>
+    <Button
+      size='large'
+      className={`${className} btn`}
+      style={{ backgroundColor: 'rgba(33, 186, 69, 1)' }}
+      onClick={() => dispatch(openDrawer('EventActionDrawer'))}
+    >
+      Create Event
+    </Button>
   );
 }
 

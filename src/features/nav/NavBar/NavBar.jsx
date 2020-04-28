@@ -1,53 +1,42 @@
-import React, { useState } from 'react';
+import React, { Fragment } from 'react';
 import '../main.style.css';
 import { Layout, Button } from 'antd';
+import { useDispatch } from 'react-redux';
+
 import Logo from '../Menus/Logo';
 import MenuBar from '../Menus/MenuBar';
 import MenuActions from '../Menus/MenuActions';
 import MenuAuth from '../Menus/MenuAuth';
 import { MenuOutlined } from '@ant-design/icons';
-import MenuMobile from '../Menus/MenuMobile';
+import AddEventMobile from './AddEventMobile';
+import { openDrawer } from '../../drawer/drawer.actions';
 
 const { Header } = Layout;
 
 function NavBar(props) {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [openMenuMobile, setOpenMenuMobile] = useState(false);
-
-  const login = () => setAuthenticated(true);
-  const logout = () => setAuthenticated(false);
-
-  const handleOpenMenuMobile = () => setOpenMenuMobile(true);
-  const handleCloseMenuMobile = () => setOpenMenuMobile(false);
+  const dispatch = useDispatch();
 
   return (
-    <Header className='header'>
-      <div className='header__left'>
-        <Logo />
-        <MenuBar className='header__left-menubar' />
-        <MenuActions className='header__left-actions' />
-      </div>
-      <div className='header__right'>
-        <MenuAuth
-          authenticated={authenticated}
-          login={login}
-          logout={logout}
-          className='header__right-menu-auth'
+    <Fragment>
+      <Header className='header'>
+        <div className='header__left'>
+          <Logo />
+          <MenuBar className='header__left-menubar' />
+          <MenuActions className='header__left-actions' />
+        </div>
+        <div className='header__right'>
+          <MenuAuth className='header__right-menu-auth' />
+        </div>
+        <Button
+          icon={<MenuOutlined />}
+          className='menu-mobile'
+          onClick={() => dispatch(openDrawer('MenuMobileDrawer'))}
         />
-      </div>
-      <Button
-        icon={<MenuOutlined />}
-        className='menu-mobile'
-        onClick={handleOpenMenuMobile}
+      </Header>
+      <AddEventMobile
+        onClick={() => dispatch(openDrawer('EventActionDrawer', {id: 12}))}
       />
-      <MenuMobile
-        onClose={handleCloseMenuMobile}
-        visible={openMenuMobile}
-        authenticated={authenticated}
-        login={login}
-        logout={logout}
-      />
-    </Header>
+    </Fragment>
   );
 }
 

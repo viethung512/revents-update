@@ -1,0 +1,9 @@
+.event-dashboard {
+  padding: 24px;
+}
+
+@media (max-width: 750px) {
+  .event-dashboard {
+    padding: 24px 0;
+  }
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.css';
 import { Col, Row } from 'antd';
 
 import EventList from '../EventList/EventList';
@@ -6,7 +7,7 @@ import EventActivity from '../EventActivity/EventActivity';
 
 function EventDashboard(props) {
   return (
-    <div style={{ padding: 24 }}>
+    <div className='event-dashboard'>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={16} xl={16}>
           <EventList />
