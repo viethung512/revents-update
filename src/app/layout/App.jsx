@@ -8,6 +8,7 @@ import NavBar from '../../features/nav/NavBar/NavBar';
 import EventDashboard from '../../features/event/EventDashboard/EventDashboard';
 import HomePage from '../../features/home/HomePage';
 import DrawerManager from '../../features/drawer/DrawerManager';
+import ModalManager from '../../features/modal/ModalManager';
 
 const { Content } = Layout;
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <Layout>
       <DrawerManager />
+      <ModalManager />
       <Switch>
         <Route path='/' component={HomePage} exact />
         <Route

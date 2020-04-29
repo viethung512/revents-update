@@ -1,0 +1,25 @@
+.auth-btn {
+  border-radius: 4px;
+  width: 100%;
+}
+
+.auth-btn--submit,
+.auth-btn--submit:hover {
+  background-color: #00b5ad;
+}
+
+.auth-btn--facebook,
+.auth-btn--facebook:hover {
+  background-color: #3b5998;
+}
+
+.auth-btn--google,
+.auth-btn--google:hover {
+  background-color: #dd4b39;
+}
+
+.auth-btn.auth-btn--submit:hover,
+.auth-btn.auth-btn--facebook:hover,
+.auth-btn.auth-btn--google:hover {
+  filter: brightness(0.9);
+}
