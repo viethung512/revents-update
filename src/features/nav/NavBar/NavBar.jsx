@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import '../main.style.css';
 import { Layout, Button } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../Menus/Logo';
 import MenuBar from '../Menus/MenuBar';
@@ -15,14 +15,22 @@ const { Header } = Layout;
 
 function NavBar(props) {
   const dispatch = useDispatch();
+  const {
+    profile: { isLoaded, isEmpty },
+  } = useSelector(state => state.firebase);
+
+  const authenticated = isLoaded && !isEmpty;
 
   return (
     <Fragment>
       <Header className='header'>
         <div className='header__left'>
           <Logo />
-          <MenuBar className='header__left-menubar' />
-          <MenuActions className='header__left-actions' />
+          <MenuBar
+            className='header__left-menubar'
+            authenticated={authenticated}
+          />
+          {authenticated && <MenuActions className='header__left-actions' />}
         </div>
         <div className='header__right'>
           <MenuAuth className='header__right-menu-auth' />
@@ -34,7 +42,7 @@ function NavBar(props) {
         />
       </Header>
       <AddEventMobile
-        onClick={() => dispatch(openDrawer('EventActionDrawer', {id: 12}))}
+        onClick={() => dispatch(openDrawer('EventActionDrawer', { id: 12 }))}
       />
     </Fragment>
   );

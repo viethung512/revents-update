@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '../../../app/layout/common/CustomRouter';
 import { Dropdown, Button, Avatar, Menu } from 'antd';
 import {
   DownOutlined,
@@ -9,11 +10,19 @@ import {
   SettingFilled,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { openDrawer } from '../../drawer/drawer.actions';
 
-function SignedInMenu({ logout, className }) {
+function SignedInMenu({ logout, className, profile }) {
+  const dispatch = useDispatch();
+  const { displayName, avatarUrl = '/assets/user.png' } = profile;
+
   const menu = () => (
-    <Menu className={className} >
-      <Menu.Item key='1'>
+    <Menu className={className}>
+      <Menu.Item
+        key='1'
+        onClick={() => dispatch(openDrawer('EventActionDrawer'))}
+      >
         <PlusOutlined />
         Create Event
       </Menu.Item>
@@ -26,12 +35,14 @@ function SignedInMenu({ logout, className }) {
         My Network
       </Menu.Item>
       <Menu.Item key='4'>
-        <UserOutlined />
-        My Profile
+        <Link to='/profile/userId' style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+          <UserOutlined /> My Profile
+        </Link>
       </Menu.Item>
       <Menu.Item key='5'>
-        <SettingFilled />
-        Settings
+        <Link to='/settings' style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+          <SettingFilled /> Settings
+        </Link>
       </Menu.Item>
       <Menu.Item key='6' onClick={logout}>
         <LogoutOutlined />
@@ -39,6 +50,7 @@ function SignedInMenu({ logout, className }) {
       </Menu.Item>
     </Menu>
   );
+
   return (
     <Dropdown trigger={['click']} overlay={menu} icon={<DownOutlined />}>
       <Button
@@ -48,11 +60,11 @@ function SignedInMenu({ logout, className }) {
       >
         <Avatar
           size='small'
-          src='/assets/user.png'
+          src={avatarUrl}
           shape='circle'
           style={{ marginRight: 12 }}
         />
-        Ngô Việt Hưng
+        {displayName}
         <DownOutlined />
       </Button>
     </Dropdown>

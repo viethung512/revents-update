@@ -6,7 +6,10 @@ import {
 
 export const NavLink = props => (
   <ReactRouterNavLink
-    style={{ color: '#fff', textDecoration: 'none' }}
+    style={{
+      color: '#fff',
+      textDecoration: 'none',
+    }}
     {...props}
   >
     {props.children}
@@ -14,7 +17,13 @@ export const NavLink = props => (
 );
 
 export const Link = props => (
-  <ReactRouterLink style={{ color: '#fff', textDecoration: 'none' }} {...props}>
+  <ReactRouterLink
+    style={{
+      color: '#fff',
+      textDecoration: 'none',
+    }}
+    {...props}
+  >
     {props.children}
   </ReactRouterLink>
 );

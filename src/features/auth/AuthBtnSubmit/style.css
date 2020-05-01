@@ -4,7 +4,8 @@
 }
 
 .auth-btn--submit,
-.auth-btn--submit:hover {
+.auth-btn--submit:hover,
+.auth-btn--submit:focus {
   background-color: #00b5ad;
 }
 

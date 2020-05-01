@@ -1,0 +1,6 @@
+.anticon.anticon-loading.ant-spin-dot {
+  position: absolute;
+  top: 200px !important;
+  left: 50%;
+  margin: -10px;
+}

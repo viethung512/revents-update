@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFirebase } from 'react-redux-firebase';
 import { Menu, Button, Avatar, Divider } from 'antd';
 import {
   PlusOutlined,
@@ -7,15 +9,34 @@ import {
   UserSwitchOutlined,
   UserOutlined,
   SettingFilled,
-  LogoutOutlined
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { logout, login } from '../../auth/auth.actions';
+import { Link } from '../../../app/layout/common/CustomRouter';
+import { openModal } from '../../modal/modal.actions';
+import { closeDrawer } from '../../drawer/drawer.actions';
 
 const { SubMenu } = Menu;
 
 function MenuMobile(props) {
   const dispatch = useDispatch();
-  const { authenticated } = useSelector(state => state.auth);
+  const firebase = useFirebase();
+  const history = useHistory();
+
+  const {
+    profile: { isLoaded, isEmpty, displayName, avatarUrl = '/assets/user.png' },
+  } = useSelector(state => state.firebase);
+
+  const authenticated = isLoaded && !isEmpty;
+
+  const handleLogin = () => {
+    dispatch(openModal('LoginModal'));
+  };
+
+  const handleLogout = () => {
+    firebase.auth().signOut();
+    history.push('/');
+    dispatch(closeDrawer());
+  };
 
   const authArea = authenticated ? (
     <Menu>
@@ -25,11 +46,11 @@ function MenuMobile(props) {
           <Fragment>
             <Avatar
               size='small'
-              src='/assets/user.png'
+              src={avatarUrl}
               shape='circle'
               style={{ marginRight: 12 }}
             />
-            Ngô Việt Hưng
+            {displayName}
           </Fragment>
         }
       >
@@ -50,10 +71,12 @@ function MenuMobile(props) {
           My Profile
         </Menu.Item>
         <Menu.Item key='5'>
-          <SettingFilled />
-          Settings
+          <Link to='/settings'>
+            <SettingFilled />
+            Settings
+          </Link>
         </Menu.Item>
-        <Menu.Item key='6' onClick={() => dispatch(logout())}>
+        <Menu.Item key='6' onClick={handleLogout}>
           <LogoutOutlined />
           Sign Out
         </Menu.Item>
@@ -65,14 +88,10 @@ function MenuMobile(props) {
         padding: '0 24px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
     >
-      <Button
-        size='large'
-        style={{ flex: '1' }}
-        onClick={() => dispatch(login())}
-      >
+      <Button size='large' style={{ flex: '1' }} onClick={handleLogin}>
         Login
       </Button>
       <Button size='large' style={{ flex: '1' }}>

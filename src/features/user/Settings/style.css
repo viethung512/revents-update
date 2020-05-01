@@ -1,0 +1,42 @@
+.setting-dashboard {
+  padding: 24px;
+}
+
+.setting-dashboard__nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* .setting-dashboard__nav-item {
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
+} */
+
+.setting-dashboard__nav-item-title {
+  color: #dcddde !important;
+}
+
+.setting-dashboard__nav-item-title span {
+  margin-right: 8px;
+}
+
+.setting-dashboard__nav-item-menu-item:hover {
+  color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.ant-menu-item-selected.setting-dashboard__nav-item-menu-item {
+  color: rgba(0, 0, 0, 0.95) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.ant-menu-submenu-selected {
+  color: #dcddde !important;
+}
+
+@media (max-width: 750px) {
+  .setting-dashboard {
+    padding: 24px 0;
+  }
+}

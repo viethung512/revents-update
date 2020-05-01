@@ -14,6 +14,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 // react redux firestore setup
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import Toastr from './app/layout/Toastr';
 
 const rootEl = document.getElementById('root');
 
@@ -22,6 +23,7 @@ const render = () => {
     <Provider store={store}>
       <BrowserRouter>
         <ReactReduxFirebaseProvider {...rrfProps}>
+          <Toastr />
           <App />
         </ReactReduxFirebaseProvider>
       </BrowserRouter>

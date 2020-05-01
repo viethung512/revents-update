@@ -12,13 +12,14 @@ const { Title, Text } = Typography;
 
 function EventListItem({ event }) {
   const {
+    id,
     attendees,
     date,
     description,
     hostPhotoURL,
     hostedBy,
     title,
-    venue
+    venue,
   } = event;
 
   const attendeesData = objectToArray(attendees);
@@ -29,7 +30,7 @@ function EventListItem({ event }) {
         bordered
         className='event'
         bodyStyle={{
-          padding: 0
+          padding: 0,
         }}
       >
         <Card.Meta
@@ -92,18 +93,18 @@ function EventListItem({ event }) {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Text type='secondary'>{description}</Text>
-              <Link to='/event/:id'>
+              <Link to={`/event/${id}`}>
                 <Button
                   type='primary'
                   size='large'
                   style={{
                     backgroundColor: '#52B6AD',
                     outline: 'none',
-                    border: 'none'
+                    border: 'none',
                   }}
                 >
                   View

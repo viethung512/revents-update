@@ -2,19 +2,17 @@ import React from 'react';
 import { Menu } from 'antd';
 import { NavLink } from '../../../app/layout/common/CustomRouter';
 
-function MenuBar(props) {
+function MenuBar({ className, authenticated }) {
   return (
-    <Menu
-      mode='horizontal'
-      defaultSelectedKeys={['1']}
-      {...props}
-    >
+    <Menu mode='horizontal' defaultSelectedKeys={['1']} className={className}>
       <Menu.Item key='1'>
         <NavLink to='/event'>Events</NavLink>
       </Menu.Item>
-      <Menu.Item key='2'>
-        <NavLink to='/people'>People</NavLink>
-      </Menu.Item>
+      {authenticated && (
+        <Menu.Item key='2'>
+          <NavLink to='/people'>People</NavLink>
+        </Menu.Item>
+      )}
     </Menu>
   );
 }

@@ -9,6 +9,9 @@ import EventDashboard from '../../features/event/EventDashboard/EventDashboard';
 import HomePage from '../../features/home/HomePage';
 import DrawerManager from '../../features/drawer/DrawerManager';
 import ModalManager from '../../features/modal/ModalManager';
+import EventDetailed from '../../features/event/EventDetailed/EventDetailed';
+import NotFound from './NotFound';
+import SettingDashboard from '../../features/user/Settings/SettingDashboard';
 
 const { Content } = Layout;
 
@@ -24,7 +27,18 @@ function App() {
             <Fragment>
               <NavBar />
               <Content className='content'>
-                <Route path='/event' component={EventDashboard} exact />
+                <Switch>
+                  <Route path='/event' component={EventDashboard} exact />
+                  <Route path='/event/:id' component={EventDetailed} />
+                  <Route path='/settings' component={SettingDashboard} />
+                  <Route
+                    component={() => (
+                      <NotFound
+                        title={`Oops - we've looked everywhere but couldn't find this.`}
+                      />
+                    )}
+                  />
+                </Switch>
               </Content>
             </Fragment>
           )}
