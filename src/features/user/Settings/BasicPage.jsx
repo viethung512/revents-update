@@ -1,32 +1,36 @@
-import React from 'react';
-import {
-  Typography,
-  Card,
-  Form,
-  Input,
-  Radio,
-  DatePicker,
-  AutoComplete,
-  Button,
-} from 'antd';
+import React, { useEffect } from 'react';
+import { Typography, Card, Form, Input, Radio, Button, DatePicker } from 'antd';
+import { useSelector } from 'react-redux';
+// import DatePicker from '../../../app/layout/common/DatePicker';
+import PlaceInput from '../../../app/layout/common/PlaceInput';
+import moment from 'moment';
 
 const { Title } = Typography;
 
-function BasicPage(props) {
+function BasicPage({ profile, updateProfile }) {
   const [form] = Form.useForm();
+  const { loading } = useSelector(state => state.async);
 
-  const onSearch = searchText => {
-    console.log(searchText);
-  };
-  const onSelect = data => {
-    console.log('onSelect', data);
-  };
-
-  const handleSubmit = values => console.log(values);
+  useEffect(() => {
+    if (Object.keys(profile).length > 2) {
+      form.setFieldsValue({
+        ...profile,
+        dateOfBirth: profile.dateOfBirth
+          ? moment.unix(profile.dateOfBirth)
+          : '',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
 
   return (
     <Card className='card'>
-      <Form form={form} size='large' onFinish={handleSubmit}>
+      <Form
+        form={form}
+        size='large'
+        onFinish={values => updateProfile(values)}
+        autoComplete='off'
+      >
         <Form.Item>
           <Title level={3}>Basics</Title>
         </Form.Item>
@@ -44,22 +48,22 @@ function BasicPage(props) {
         </Form.Item>
         <Form.Item name='dateOfBirth'>
           <DatePicker
+            placeholder='What is your birth day'
+            style={{ width: '100%', height: '100%' }}
             showTime
-            placeholder='Date of birth'
-            style={{ width: '100%' }}
+            format='YYYY-MM-DD'
           />
         </Form.Item>
         <Form.Item name='city'>
-          <AutoComplete
-            // options={options}
-            style={{ width: '100%' }}
-            onSelect={onSelect}
-            onSearch={onSearch}
-            placeholder='Home Town'
-          />
+          <PlaceInput placeholder='Home Town' />
         </Form.Item>
         <Form.Item>
-          <Button className='btn btn--success' size='large'>
+          <Button
+            className='btn btn--success'
+            size='large'
+            htmlType='submit'
+            loading={loading}
+          >
             Update Profile
           </Button>
         </Form.Item>

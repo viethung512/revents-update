@@ -1,11 +1,14 @@
 import React, { Fragment } from 'react';
 import './style.css';
+import { useDispatch } from 'react-redux';
 import { Form, Button, Divider, Typography } from 'antd';
 import { FacebookFilled, GooglePlusCircleFilled } from '@ant-design/icons';
+import { socialLogin } from '../auth.actions';
 
 const { Text } = Typography;
 
 function AuthBtnSubmit({ btnContent, loading, error }) {
+  const dispatch = useDispatch();
   const hasError = error && Object.keys(error).length > 0;
 
   return (
@@ -35,6 +38,7 @@ function AuthBtnSubmit({ btnContent, loading, error }) {
           type='primary'
           className='auth-btn auth-btn--facebook'
           icon={<FacebookFilled />}
+          onClick={() => dispatch(socialLogin('facebook'))}
         >
           Login with Facebook
         </Button>
@@ -44,6 +48,7 @@ function AuthBtnSubmit({ btnContent, loading, error }) {
           type='primary'
           className='auth-btn auth-btn--google'
           icon={<GooglePlusCircleFilled />}
+          onClick={() => dispatch(socialLogin('google'))}
         >
           Login with Google
         </Button>

@@ -5,14 +5,14 @@ import { Spin } from 'antd';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-function Loading({ loading, children, delay }) {
+function Loading({ loading, children, delay, color = '#fff' }) {
   return (
     <Spin
       indicator={antIcon}
       spinning={loading}
       delay={delay}
       tip='Loading...'
-      style={{ color: '#fff' }}
+      style={{ color: color }}
     >
       {children}
     </Spin>

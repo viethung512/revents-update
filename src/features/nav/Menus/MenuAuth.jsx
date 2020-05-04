@@ -28,6 +28,7 @@ function MenuAuth({ className }) {
           className={className}
           logout={handleLogout}
           profile={profile}
+          auth={auth}
         />
       ) : (
         <SignedOutMenu className={className} login={handleLogin} />

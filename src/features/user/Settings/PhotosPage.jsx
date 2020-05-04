@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { toastr } from 'react-redux-toastr';
 import { Card, Typography, Row, Col, Divider } from 'antd';
 import DropzoneInput from '../../../app/layout/image/DropzoneInput';
 import CropperInput from '../../../app/layout/image/CropperInput';
 import PreviewImage from '../../../app/layout/image/PreviewImage';
-import { uploadProfileImage, deletePhoto } from '../user.actions';
+import { uploadProfileImage, deletePhoto, setMainPhoto } from '../user.actions';
 import PhotoItem from './PhotoItem';
 
 const { Title } = Typography;
@@ -35,14 +34,8 @@ function PhotosPage(props) {
   });
 
   const handleUploadImage = async () => {
-    try {
-      await dispatch(uploadProfileImage(image, files[0].name));
-      handleCancelCrop();
-      toastr.success('Success', 'Photo has been uploaded');
-    } catch (err) {
-      console.log(err);
-      toastr.error('Oops', 'Some thing went wrong');
-    }
+    await dispatch(uploadProfileImage(image, files[0].name));
+    handleCancelCrop();
   };
 
   const handleCancelCrop = () => {
@@ -53,6 +46,8 @@ function PhotosPage(props) {
   const handleDeletePhoto = photo => {
     dispatch(deletePhoto(photo));
   };
+
+  const handleSetMainPhoto = photo => dispatch(setMainPhoto(photo));
 
   const { avatarUrl = '/assets/user.png' } = profile;
 
@@ -91,7 +86,7 @@ function PhotosPage(props) {
           <PhotoItem src={avatarUrl} isMainPhoto={true} />
         </Col>
         {photos &&
-          photos.length > 0 &&
+          photos.length > 1 &&
           photos
             .filter(photo => photo.url !== avatarUrl)
             .map(photo => (
@@ -100,6 +95,7 @@ function PhotosPage(props) {
                   src={photo.url}
                   isMainPhoto={false}
                   deletePhoto={handleDeletePhoto}
+                  setMainPhoto={handleSetMainPhoto}
                   photo={photo}
                   loading={loading}
                 />

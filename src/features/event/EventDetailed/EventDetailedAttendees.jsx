@@ -1,15 +1,10 @@
 import React from 'react';
 import { Link } from '../../../app/layout/common/CustomRouter';
 import { Card, List, Avatar, Typography } from 'antd';
-import { objectToArray } from '../../../app/util/helper';
 
 const { Text } = Typography;
 
-function EventDetailedAttendees({ className, event }) {
-  let { attendees = {} } = event;
-
-  attendees = objectToArray(attendees);
-
+function EventDetailedAttendees({ className, attendees }) {
   return (
     <Card
       className={className}
@@ -22,15 +17,13 @@ function EventDetailedAttendees({ className, event }) {
       <List
         itemLayout='horizontal'
         dataSource={attendees}
-        renderItem={item => (
+        renderItem={({ id, photoURL, displayName }) => (
           <List.Item>
             <List.Item.Meta
-              avatar={
-                <Avatar shape='square' size='large' src={item.photoURL} />
-              }
+              avatar={<Avatar shape='square' size='large' src={photoURL} />}
               title={
-                <Link to='/profile/:userId'>
-                  <Text>{item.name}</Text>
+                <Link to={`/profile/${id}`}>
+                  <Text>{displayName}</Text>
                 </Link>
               }
             />

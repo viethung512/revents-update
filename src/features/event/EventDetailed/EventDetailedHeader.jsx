@@ -1,43 +1,89 @@
 import React from 'react';
 import { Link } from '../../../app/layout/common/CustomRouter';
 import { Card, Typography, Button } from 'antd';
-import { format } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { formatEventDate } from '../../../app/util/helper';
+import { openDrawer } from '../../drawer/drawer.actions';
+import { goingToEvent, cancelGoingToEvent } from '../event.actions';
 
 const { Title, Text } = Typography;
 
-function EventDetailedHeader({ event, className }) {
-  const {
-    profile: { isLoaded, isEmpty },
-  } = useSelector(state => state.firebase);
+function EventDetailedHeader({
+  event,
+  profile: { isLoaded, isEmpty },
+  className,
+  authenticatedId,
+  attendees,
+}) {
+  const dispatch = useDispatch();
+  const goingToEventLoading = useSelector(state =>
+    state.async.actionType === 'goingToEvent' ? true : null
+  );
+  const cancelGoingToEventLoading = useSelector(state =>
+    state.async.actionType === 'cancelGoingToEvent' ? true : null
+  );
 
-  const { id, title, hostedBy, date } = event;
+  const { title, hostedBy, hostUid, date, category } = event;
+
+  const isGoing = attendees.find(attendee => attendee.id === authenticatedId);
+
+  const initEventAction = () =>
+    dispatch(openDrawer('EventActionDrawer', { event }));
+
+  const joinEvent = () => dispatch(goingToEvent(event));
+  const cancelMyPlace = () => dispatch(cancelGoingToEvent(event));
 
   const authenticated = isLoaded && !isEmpty;
 
   const actions = authenticated
-    ? [
-        <Button size='large' className='btn btn--primary'>
-          JOIN THIS EVENT
-        </Button>,
-        <Button
-          style={{ backgroundColor: '#e0e1e2', color: 'rgba(0, 0, 0, 0.6)' }}
-          size='large'
-          className='btn btn--default'
-        >
-          Cancel My Place
-        </Button>,
-        <Button
-          size='large'
-          className='btn btn--warning'
-          style={{
-            float: 'right',
-            marginRight: 12,
-          }}
-        >
-          Manage event
-        </Button>,
-      ]
+    ? authenticatedId === hostUid
+      ? [
+          <Button
+            size='large'
+            className='btn btn--warning'
+            style={{
+              float: 'right',
+              marginRight: 12,
+            }}
+            onClick={initEventAction}
+          >
+            Manage event
+          </Button>,
+        ]
+      : event.cancelled
+      ? [
+          <Button
+            ghost
+            danger
+            size='large'
+            style={{ float: 'left', marginLeft: 12 }}
+          >
+            This event has been cancelled
+          </Button>,
+        ]
+      : isGoing
+      ? [
+          <Button
+            size='large'
+            className='btn btn--default'
+            style={{ float: 'left', marginRight: 'auto', marginLeft: 12 }}
+            onClick={cancelMyPlace}
+            loading={cancelGoingToEventLoading}
+          >
+            Cancel My Place
+          </Button>,
+        ]
+      : [
+          <Button
+            size='large'
+            className='btn btn--primary'
+            style={{ float: 'left', margin: '0 12px' }}
+            onClick={joinEvent}
+            loading={goingToEventLoading}
+          >
+            JOIN THIS EVENT
+          </Button>,
+        ]
     : [
         <Button
           size='large'
@@ -53,7 +99,7 @@ function EventDetailedHeader({ event, className }) {
       bordered
       cover={
         <img
-          src='/assets/categoryImages/travel.jpg'
+          src={`/assets/categoryImages/${category}.jpg`}
           alt='category'
           className='event-detailed__header-img'
         />
@@ -67,11 +113,11 @@ function EventDetailedHeader({ event, className }) {
           {title}
         </Title>
         <Text className='event-detailed__header-title-description'>
-          {date ? format(date.toDate(), 'dddd Do MMMM') : ''}
+          {date && <span>{formatEventDate(date)}</span>}
         </Text>
         <Text className='event-detailed__header-title-description'>
           Hosted by{' '}
-          <Link to={`/profile/${id}`}>
+          <Link to={`/profile/${hostUid}`}>
             <strong>{hostedBy}</strong>
           </Link>
         </Text>

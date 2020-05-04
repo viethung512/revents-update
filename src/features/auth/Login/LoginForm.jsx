@@ -11,7 +11,7 @@ function LoginForm(props) {
   const handleSubmit = values => dispatch(login(values));
 
   return (
-    <Form size='large' autoComplete='false' onFinish={handleSubmit}>
+    <Form size='large' autoComplete='off' onFinish={handleSubmit}>
       <Form.Item
         name='email'
         rules={[

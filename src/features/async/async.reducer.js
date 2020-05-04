@@ -7,6 +7,7 @@ import {
 const asyncReducerInitialState = {
   loading: false,
   elementName: null,
+  actionType: null,
   error: null,
 };
 
@@ -16,7 +17,8 @@ const asyncReducer = (state = asyncReducerInitialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
-        elementName: payload,
+        elementName: payload.elmName,
+        actionType: payload.actionType,
         error: null,
       };
     case ASYNC_ACTION_FINISH:
@@ -24,6 +26,7 @@ const asyncReducer = (state = asyncReducerInitialState, { type, payload }) => {
         ...state,
         loading: false,
         elementName: null,
+        actionType: null,
         error: null,
       };
     case ASYNC_ACTION_ERROR:
@@ -31,6 +34,7 @@ const asyncReducer = (state = asyncReducerInitialState, { type, payload }) => {
         ...state,
         loading: false,
         elementName: null,
+        actionType: null,
         error: payload.error,
       };
     default:

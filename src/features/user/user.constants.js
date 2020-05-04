@@ -1,0 +1,2 @@
+export const GET_USER_EVENT_BY_KEY = 'GET_USER_EVENT_BY_KEY';
+export const CLEAR_USER_EVENT = 'CLEAR_USER_EVENT';

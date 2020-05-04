@@ -5,8 +5,7 @@ import { List, Avatar, Card, Typography, Button } from 'antd';
 import { ClockCircleFilled, EnvironmentFilled } from '@ant-design/icons';
 import IconText from '../../../app/layout/common/IconText';
 import { Link } from '../../../app/layout/common/CustomRouter';
-import { objectToArray } from '../../../app/util/helper';
-import { format } from 'date-fns';
+import { objectToArray, formatEventDate } from '../../../app/util/helper';
 
 const { Title, Text } = Typography;
 
@@ -18,6 +17,7 @@ function EventListItem({ event }) {
     description,
     hostPhotoURL,
     hostedBy,
+    hostUid,
     title,
     venue,
   } = event;
@@ -37,14 +37,14 @@ function EventListItem({ event }) {
           className='event__header'
           avatar={<Avatar size={80} src={hostPhotoURL || '/assets/user.png'} />}
           title={
-            <Link to='/event/:id'>
+            <Link to={`/event/${id}`}>
               <Title level={4}>{title}</Title>
             </Link>
           }
           description={
             <span>
               Hosted By
-              <Link to='/profile/:id'>
+              <Link to={`/profile/${hostUid}`}>
                 <Text strong> {hostedBy}</Text>
               </Link>
             </span>
@@ -57,12 +57,7 @@ function EventListItem({ event }) {
               <span style={{ marginRight: 12 }}>
                 <IconText
                   icon={<ClockCircleFilled />}
-                  label={
-                    <span>
-                      <span>{format(date.toDate(), 'EEEEEE do MMM')}</span> at{' '}
-                      <span>{format(date.toDate(), 'aa')}</span>
-                    </span>
-                  }
+                  label={date && <span>{formatEventDate(date)}</span>}
                 />
               </span>
               |

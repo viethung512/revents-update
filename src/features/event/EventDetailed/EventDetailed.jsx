@@ -10,11 +10,13 @@ import EventDetailedChat from './EventDetailedChat';
 import EventDetailedAttendees from './EventDetailedAttendees';
 import Loading from '../../../app/layout/common/Loading';
 import NotFound from '../../../app/layout/NotFound';
+import { objectToArray } from '../../../app/util/helper';
 
 function EventDetailed(props) {
   const { id } = useParams();
+  const authenticatedId = useSelector(state => state.firebase.auth.uid);
   const event = useSelector(({ firestore: { data } }) =>
-    data.event ? data.event : {}
+    data.event ? { ...data.event, id } : {}
   );
   const { event: loading } = useSelector(
     ({
@@ -23,12 +25,16 @@ function EventDetailed(props) {
       },
     }) => requesting
   );
+  const { profile } = useSelector(state => state.firebase);
 
   useFirestoreConnect({
     collection: 'events',
     doc: id,
     storeAs: 'event',
   });
+
+  const attendees =
+    event && event.attendees ? objectToArray(event.attendees) : [];
 
   const result =
     !loading && Object.keys(event).length <= 0 ? (
@@ -39,6 +45,9 @@ function EventDetailed(props) {
           <Col xs={24} sm={24} md={24} lg={16} xl={16}>
             <EventDetailedHeader
               event={event}
+              profile={profile}
+              attendees={attendees}
+              authenticatedId={authenticatedId}
               className='card event-detailed__header'
             />
             <EventDetailedInfo
@@ -53,7 +62,7 @@ function EventDetailed(props) {
           <Col xs={0} sm={0} md={0} lg={8} xl={8}>
             <EventDetailedAttendees
               className='card event-detailed__attendees'
-              event={event}
+              attendees={attendees}
             />
           </Col>
         </Row>

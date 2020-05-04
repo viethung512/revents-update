@@ -13,7 +13,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { openDrawer } from '../../drawer/drawer.actions';
 
-function SignedInMenu({ logout, className, profile }) {
+function SignedInMenu({ logout, className, profile, auth }) {
   const dispatch = useDispatch();
   const { displayName, avatarUrl = '/assets/user.png' } = profile;
 
@@ -35,7 +35,10 @@ function SignedInMenu({ logout, className, profile }) {
         My Network
       </Menu.Item>
       <Menu.Item key='4'>
-        <Link to='/profile/userId' style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+        <Link
+          to={`/profile/${auth.uid}`}
+          style={{ color: 'rgba(0, 0, 0, 0.65)' }}
+        >
           <UserOutlined /> My Profile
         </Link>
       </Menu.Item>

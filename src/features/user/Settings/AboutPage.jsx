@@ -1,32 +1,33 @@
-import React from 'react';
-import {
-  Card,
-  Form,
-  Typography,
-  Radio,
-  Input,
-  Select,
-  AutoComplete,
-  Button,
-} from 'antd';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Card, Form, Typography, Radio, Input, Select, Button } from 'antd';
+import PlaceInput from '../../../app/layout/common/PlaceInput';
 
 const { Title, Text } = Typography;
 
-function AboutPage(props) {
+const interests = [
+  { key: 'drinks', text: 'Drinks', value: 'drinks' },
+  { key: 'culture', text: 'Culture', value: 'culture' },
+  { key: 'film', text: 'Film', value: 'film' },
+  { key: 'food', text: 'Food', value: 'food' },
+  { key: 'music', text: 'Music', value: 'music' },
+  { key: 'travel', text: 'Travel', value: 'travel' },
+];
+
+function AboutPage({ profile, updateProfile }) {
   const [form] = Form.useForm();
+  const { loading } = useSelector(state => state.async);
 
-  const onSearch = searchText => {
-    console.log(searchText);
-  };
-  const onSelect = data => {
-    console.log('onSelect', data);
-  };
-
-  const handleSubmit = values => console.log(values);
+  useEffect(() => {
+    form.setFieldsValue({
+      ...profile,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Card className='card'>
-      <Form form={form} size='large' onFinish={handleSubmit}>
+      <Form form={form} size='large' onFinish={values => updateProfile(values)}>
         <Form.Item>
           <Title level={3}>About Me</Title>
           <Text>Complete your profile to get the most out of this site</Text>
@@ -48,24 +49,24 @@ function AboutPage(props) {
         </Form.Item>
         <Form.Item name='interests'>
           <Select
-            options={[{ value: 1, label: 'Test' }]}
+            options={interests}
             placeholder='Select your interests'
+            mode='multiple'
           />
         </Form.Item>
         <Form.Item name='occupation'>
           <Input placeholder='Occupation' />
         </Form.Item>
         <Form.Item name='origin'>
-          <AutoComplete
-            // options={options}
-            style={{ width: '100%' }}
-            onSelect={onSelect}
-            onSearch={onSearch}
-            placeholder='Home Town'
-          />
+          <PlaceInput placeholder='Country of Origin' />
         </Form.Item>
         <Form.Item>
-          <Button className='btn btn--success' size='large'>
+          <Button
+            className='btn btn--success'
+            size='large'
+            htmlType='submit'
+            loading={loading}
+          >
             Update Profile
           </Button>
         </Form.Item>

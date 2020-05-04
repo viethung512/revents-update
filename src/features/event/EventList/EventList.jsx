@@ -12,19 +12,20 @@ function EventList(props) {
     data.events ? objectToArray(data.events) : []
   );
 
+  const { isLoaded } = useSelector(state => state.firebase.profile);
+
   useFirestoreConnect({
     collection: 'events',
     storeAs: 'events',
   });
 
-  const loading = events.length > 0 ? false : true;
   return (
     <List
-      itemLayout='horizontal'
+      itemLayout='vertical'
       dataSource={events}
       renderItem={event => <EventListItem event={event} />}
-      grid={{ gutter: 16, column: 1 }}
-      loading={loading}
+      // grid={{ gutter: 16, column: 1 }}
+      loading={!isLoaded}
     />
   );
 }

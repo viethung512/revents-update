@@ -4,7 +4,10 @@ import {
   ASYNC_ACTION_ERROR,
 } from './async.constants';
 
-export const asyncActionStart = () => ({ type: ASYNC_ACTION_START });
+export const asyncActionStart = (actionType = null, elmName = null) => ({
+  type: ASYNC_ACTION_START,
+  payload: { elmName, actionType },
+});
 
 export const asyncActionFinish = () => ({ type: ASYNC_ACTION_FINISH });
 

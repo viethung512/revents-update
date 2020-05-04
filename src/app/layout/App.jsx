@@ -12,6 +12,7 @@ import ModalManager from '../../features/modal/ModalManager';
 import EventDetailed from '../../features/event/EventDetailed/EventDetailed';
 import NotFound from './NotFound';
 import SettingDashboard from '../../features/user/Settings/SettingDashboard';
+import UserDetailed from '../../features/user/UserDetailed/UserDetailed';
 
 const { Content } = Layout;
 
@@ -30,6 +31,7 @@ function App() {
                 <Switch>
                   <Route path='/event' component={EventDashboard} exact />
                   <Route path='/event/:id' component={EventDetailed} />
+                  <Route path='/profile/:id' component={UserDetailed} />
                   <Route path='/settings' component={SettingDashboard} />
                   <Route
                     component={() => (

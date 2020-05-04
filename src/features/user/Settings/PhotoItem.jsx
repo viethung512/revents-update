@@ -1,11 +1,29 @@
 import React from 'react';
-import { Card, Typography, Radio } from 'antd';
+import { Card, Typography, Button } from 'antd';
 import { SwapLeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import LazyLoad from 'react-lazyload';
+import { useSelector } from 'react-redux';
 
 const { Title } = Typography;
 
-const PhotoItem = ({ src, isMainPhoto, deletePhoto, photo, loading }) => {
+const PhotoItem = ({ src, isMainPhoto, deletePhoto, setMainPhoto, photo }) => {
+  const { loading, elementName, actionType } = useSelector(
+    state => state.async
+  );
+
+  const loadingDelete =
+    photo && actionType === 'deletePhoto' && elementName === photo.name
+      ? loading
+      : null;
+  const loadingSetMain =
+    photo && actionType === 'setMainPhoto' && elementName === photo.name
+      ? loading
+      : null;
+
+  const handleDelete = () => deletePhoto(photo);
+
+  const handleSetMain = () => setMainPhoto(photo);
+
   return (
     <Card
       bordered
@@ -36,41 +54,24 @@ const PhotoItem = ({ src, isMainPhoto, deletePhoto, photo, loading }) => {
           Main photo
         </Title>
       ) : (
-        <Radio.Group style={{ width: '100%' }}>
-          <Radio.Button
-            value='main'
-            style={{ width: '50%' }}
+        <div style={{ width: '100%' }}>
+          <Button
+            loading={loadingSetMain}
+            disabled={loadingDelete}
             className='btn btn--success'
-            loading={loading}
-            disabled={loading}
-          >
-            <SwapLeftOutlined
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            />
-          </Radio.Button>
-          <Radio.Button
-            value='delete'
-            style={{ width: '50%' }}
+            style={{ borderRadius: 'unset', width: '50%' }}
+            icon={<SwapLeftOutlined />}
+            onClick={handleSetMain}
+          />
+          <Button
+            loading={loadingDelete}
+            disabled={loadingSetMain}
             className='btn btn--danger'
-            loading={loading}
-            disabled={loading}
-            onClick={() => deletePhoto(photo)}
-          >
-            <DeleteOutlined
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            />
-          </Radio.Button>
-        </Radio.Group>
+            onClick={handleDelete}
+            style={{ borderRadius: 'unset', width: '50%' }}
+            icon={<DeleteOutlined />}
+          />
+        </div>
       )}
     </Card>
   );

@@ -5,14 +5,13 @@ import ReduxToastr from 'react-redux-toastr';
 function Toastr(props) {
   return (
     <ReduxToastr
-      timeOut={4000}
+      timeOut={1500}
       newestOnTop={false}
       preventDuplicates
       position='bottom-right'
       getState={state => state.toastr} // This is the default
       transitionIn='fadeIn'
       transitionOut='fadeOut'
-      progressBar
       closeOnToastrClick
     />
   );

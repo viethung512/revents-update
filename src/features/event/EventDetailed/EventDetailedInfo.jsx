@@ -6,7 +6,7 @@ import {
   EnvironmentFilled,
 } from '@ant-design/icons';
 import Map from '../../../app/layout/common/Map';
-import { format } from 'date-fns';
+import { formatEventDate } from '../../../app/util/helper';
 
 const { Text } = Typography;
 
@@ -17,14 +17,7 @@ const getEventInfoData = (date, description, venue) => {
       icon: <InfoOutlined />,
     },
     {
-      label: date ? (
-        <span>
-          <span>{format(date.toDate(), 'EEEEEE do MMM')}</span> at{' '}
-          <span>{format(date.toDate(), 'aa')}</span>
-        </span>
-      ) : (
-        ''
-      ),
+      label: date ? <span>{formatEventDate(date)}</span> : '',
       icon: <CalendarFilled />,
     },
     {

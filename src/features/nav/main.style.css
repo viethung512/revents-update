@@ -27,9 +27,10 @@
 }
 
 .header__left-menubar {
-  background-color: transparent;
+  background-color: transparent !important;
   color: white;
-  margin-left: 16px;
+  margin-left: 16px !important;
+  margin-right: 16px !important;
 }
 
 .header__auth {

@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Typography,
-  AutoComplete,
-  DatePicker
-} from 'antd';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Input, Button, Select, Typography, DatePicker } from 'antd';
+import { createEvent, updateEvent, cancelToggle } from '../event.actions';
+import moment from 'moment';
+import PlaceInput from '../../../app/layout/common/PlaceInput';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -19,39 +16,70 @@ const categories = [
   { key: 'film', text: 'Film', value: 'film' },
   { key: 'food', text: 'Food', value: 'food' },
   { key: 'music', text: 'Music', value: 'music' },
-  { key: 'travel', text: 'Travel', value: 'travel' }
+  { key: 'travel', text: 'Travel', value: 'travel' },
 ];
 
-const EventAction = ({ id }) => {
+const EventAction = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { loading } = useSelector(state => state.async);
+  const createEventLoading = useSelector(state =>
+    state.async.actionType === 'createEvent' ? loading : null
+  );
+  const updateEventLoading = useSelector(state =>
+    state.async.actionType === 'updateEvent' ? loading : null
+  );
+  const cancelEventLoading = useSelector(state =>
+    state.async.actionType === 'cancelToggleEvent' ? loading : null
+  );
+
+  const event = useSelector(({ drawer }) =>
+    drawer.drawerProps ? drawer.drawerProps.event : null
+  );
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (id) {
+    if (event && event.id) {
       form.setFieldsValue({
-        name: 'test',
-        category: 'film',
-        description: 'ngo viet hung',
-        city: 'ha noi',
-        venue: 'some'
-        // date: Date.now()
+        ...event,
+        date: moment.unix(event.date),
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [event]);
 
   const handleSelectChange = value => form.setFieldsValue({ category: value });
-  const handleDateChange = (value, dateString) => {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
+
+  const handleSubmit = async values => {
+    values.venueLatLng = {
+      lat: 40.7484405,
+      lng: 73.98566440000002,
+    };
+    // values['date'] = values['date'].format('YYYY-MM-DD HH:mm:ss');
+
+    values['date'] = values['date'].unix();
+
+    if (event && event.id) {
+      const newEvent = { ...event, ...values };
+
+      dispatch(updateEvent(newEvent));
+    } else {
+      const createdEvent = await dispatch(createEvent(values));
+      history.push(`/event/${createdEvent.id}`);
+    }
   };
 
-  const onFinish = values => {
-    console.log(values);
-  };
+  const handleToggleEvent = () =>
+    dispatch(cancelToggle(event.cancelled, event.id));
 
   return (
-    <Form form={form} name='control-hooks' onFinish={onFinish} size='large'>
+    <Form
+      form={form}
+      name='control-hooks'
+      onFinish={handleSubmit}
+      size='large'
+      autoComplete='off'
+    >
       <Form.Item style={{ marginBottom: 0 }}>
         <Title
           level={4}
@@ -101,40 +129,48 @@ const EventAction = ({ id }) => {
         name='city'
         rules={[{ required: true, message: 'City is require' }]}
       >
-        <AutoComplete placeholder='Event City' />
+        <PlaceInput placeholder='Event City' />
       </Form.Item>
       <Form.Item
         name='venue'
         rules={[{ required: true, message: 'Venue is require' }]}
       >
-        <AutoComplete placeholder='Event Venue' />
+        <PlaceInput placeholder='Event Venue' />
       </Form.Item>
       <Form.Item
         name='date'
         rules={[{ required: true, message: 'Date is require' }]}
+        style={{ height: '100%' }}
       >
         <DatePicker
-          placeholder='Event Date'
-          showToday
-          onChange={handleDateChange}
-          style={{ width: '100%' }}
+          placeholder='Event date'
+          style={{ width: '100%', height: '100%' }}
+          showTime
+          format='YYYY-MM-DD HH:mm:ss'
         />
       </Form.Item>
       <Form.Item>
         <Button
+          loading={createEventLoading || updateEventLoading}
           type='primary'
-          style={{
-            backgroundColor: '#21ba45',
-            marginRight: 12,
-            borderRadius: 4
-          }}
+          className='btn btn--success'
+          style={{ marginRight: 8 }}
           htmlType='submit'
         >
           Submit
         </Button>
-        <Button type='ghost' style={{ borderRadius: 4 }}>
-          Cancel
-        </Button>
+        <Button className='btn btn--default'>Cancel</Button>
+
+        {event && event.id && (
+          <Button
+            loading={cancelEventLoading}
+            className={event.cancelled ? 'btn btn--success' : 'btn btn--danger'}
+            style={{ float: 'right' }}
+            onClick={handleToggleEvent}
+          >
+            {event.cancelled ? 'Reactivate Event' : 'Cancel Event'}
+          </Button>
+        )}
       </Form.Item>
     </Form>
   );

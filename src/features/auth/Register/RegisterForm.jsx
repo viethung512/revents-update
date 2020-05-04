@@ -22,7 +22,7 @@ function RegisterForm(props) {
   };
 
   return (
-    <Form size='large' onFinish={handleSubmit} form={form}>
+    <Form size='large' onFinish={handleSubmit} form={form} autoComplete='off'>
       <Form.Item
         name='displayName'
         rules={[{ required: true, message: 'Display name is require' }]}

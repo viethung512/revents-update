@@ -4,6 +4,7 @@ import {
   asyncActionError,
 } from '../async/async.actions';
 import { closeModal } from '../modal/modal.actions';
+import { toastr } from 'react-redux-toastr';
 
 export const login = ({ email, password }) => async (
   dispatch,
@@ -33,10 +34,13 @@ export const register = ({ displayName, email, password }) => async (
 
   try {
     dispatch(asyncActionStart());
-    const createdUser = await firebase
+    let createdUser = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
-    await createdUser.user.updateProfile({ displayName });
+
+    await createdUser.user.updateProfile({
+      displayName: displayName,
+    });
     const newUser = {
       displayName,
       createdAt: firestore.FieldValue.serverTimestamp(),
@@ -48,5 +52,45 @@ export const register = ({ displayName, email, password }) => async (
   } catch (err) {
     console.log(err);
     dispatch(asyncActionError(err));
+  }
+};
+
+export const socialLogin = selectedProvider => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+
+  try {
+    dispatch(closeModal());
+    await firebase.login({
+      provider: selectedProvider,
+      type: 'popup',
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updatePassword = credential => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+  const user = firebase.auth().currentUser;
+
+  try {
+    dispatch(asyncActionStart());
+
+    await user.updatePassword(credential.newPassword);
+
+    dispatch(asyncActionFinish());
+    toastr.success('Success', 'Your password has been updated');
+  } catch (err) {
+    console.log(err);
+    dispatch(asyncActionError(err));
+    toastr.error('Oops', 'Some thing went wrong');
   }
 };

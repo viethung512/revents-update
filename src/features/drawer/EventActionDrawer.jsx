@@ -22,6 +22,7 @@ function EventActionDrawer({ id }) {
       getContainer={false}
       visible={true}
       onClose={() => dispatch(closeDrawer())}
+      placement='left'
     >
       <EventAction id={id} />
     </Drawer>

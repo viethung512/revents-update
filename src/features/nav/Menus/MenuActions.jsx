@@ -9,8 +9,8 @@ function MenuActions({ className }) {
   return (
     <Button
       size='large'
-      className={`${className} btn`}
-      style={{ backgroundColor: 'rgba(33, 186, 69, 1)' }}
+      className={`${className} btn btn--success`}
+      style={{ border: '2px solid #fff' }}
       onClick={() => dispatch(openDrawer('EventActionDrawer'))}
     >
       Create Event
