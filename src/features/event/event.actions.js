@@ -7,6 +7,7 @@ import {
 import { toastr } from 'react-redux-toastr';
 import { createNewEvent } from '../../app/util/helper';
 import { closeDrawer } from '../drawer/drawer.actions';
+import { FETCH_EVENTS, CLEAR_EVENTS } from './event.constants';
 
 export const createEvent = event => async (
   dispatch,
@@ -193,5 +194,77 @@ export const cancelGoingToEvent = event => async (
     console.log(err);
     dispatch(asyncActionError(err));
     toastr.error('Oops', 'Problem removing from the event');
+  }
+};
+
+export const getEventsForDashboard = lastEvent => async (
+  dispatch,
+  getState
+) => {
+  const today = Math.round(Date.now() / 1000);
+  const firestore = firebase.firestore();
+  const eventRef = firestore.collection('events');
+
+  try {
+    dispatch(asyncActionStart());
+
+    let startAfter =
+      lastEvent &&
+      (await firestore.collection('events').doc(lastEvent.id).get());
+    let query;
+
+    lastEvent
+      ? (query = eventRef
+          .where('date', '>=', today)
+          .orderBy('date')
+          .startAfter(startAfter)
+          .limit(2))
+      : (query = eventRef.where('date', '>=', today).orderBy('date').limit(2));
+
+    let querySnap = await query.get();
+
+    if (querySnap.docs.length === 0) {
+      dispatch(asyncActionFinish());
+      return;
+    }
+
+    const events = querySnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    dispatch({ type: FETCH_EVENTS, payload: { events } });
+    dispatch(asyncActionFinish());
+    return querySnap;
+  } catch (err) {
+    console.log(err);
+    dispatch(asyncActionError(err));
+  }
+};
+
+export const clearEvents = () => ({ type: CLEAR_EVENTS });
+
+export const addEventComment = (eventId, comment, parentId, elmId) => async (
+  dispatch,
+  getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+  const { displayName, avatarUrl } = getState().firebase.profile;
+  const { uid } = firebase.auth().currentUser;
+
+  const newComment = {
+    parentId,
+    displayName,
+    photoURL: avatarUrl || '/assets/user.png',
+    uid,
+    text: comment,
+    date: Math.round(Date.now() / 1000),
+  };
+
+  try {
+    dispatch(asyncActionStart('addEventComment', elmId));
+    await firebase.push(`event_chat/${eventId}`, newComment);
+    dispatch(asyncActionFinish());
+  } catch (err) {
+    console.log(err);
+    dispatch(asyncActionError(err));
+    toastr.error('Oops', 'Problem adding new comment');
   }
 };

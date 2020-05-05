@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import './style.css';
-import { List, Avatar, Card, Typography, Button } from 'antd';
+import { List, Avatar, Card, Typography, Button, Tag } from 'antd';
 
 import { ClockCircleFilled, EnvironmentFilled } from '@ant-design/icons';
 import IconText from '../../../app/layout/common/IconText';
@@ -20,6 +20,7 @@ function EventListItem({ event }) {
     hostUid,
     title,
     venue,
+    cancelled,
   } = event;
 
   const attendeesData = objectToArray(attendees);
@@ -33,6 +34,16 @@ function EventListItem({ event }) {
           padding: 0,
         }}
       >
+        {cancelled && (
+          <Tag
+            color='red'
+            className='ribbon ribbon--danger'
+            style={{ right: -20 }}
+          >
+            This event has been cancelled
+          </Tag>
+        )}
+
         <Card.Meta
           className='event__header'
           avatar={<Avatar size={80} src={hostPhotoURL || '/assets/user.png'} />}

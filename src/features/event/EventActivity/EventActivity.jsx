@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Avatar } from 'antd';
+import './style.css';
+import { List, Avatar, Affix } from 'antd';
 
 const data = [
   {
@@ -18,22 +19,24 @@ const data = [
 
 function EventActivity(props) {
   return (
-    <List
-      style={{ backgroundColor: '#fff' }}
-      itemLayout='horizontal'
-      dataSource={data}
-      renderItem={item => (
-        <List.Item>
-          <List.Item.Meta
-            avatar={
-              <Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />
-            }
-            title={<a href='https://ant.design'>{item.title}</a>}
-            description='Ant Design, a design language for background applications, is refined by Ant UED Team'
-          />
-        </List.Item>
-      )}
-    />
+    <Affix offsetTop={100}>
+      <List
+        style={{ backgroundColor: '#fff' }}
+        itemLayout='horizontal'
+        dataSource={data}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />
+              }
+              title={<a href='https://ant.design'>{item.title}</a>}
+              description='Ant Design, a design language for background applications, is refined by Ant UED Team'
+            />
+          </List.Item>
+        )}
+      />
+    </Affix>
   );
 }
 

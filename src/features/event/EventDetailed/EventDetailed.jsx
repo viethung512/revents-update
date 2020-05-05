@@ -2,7 +2,7 @@ import React from 'react';
 import './style.css';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, useFirebaseConnect } from 'react-redux-firebase';
 import { Row, Col } from 'antd';
 import EventDetailedHeader from './EventDetailedHeader';
 import EventDetailedInfo from './EventDetailedInfo';
@@ -18,6 +18,12 @@ function EventDetailed(props) {
   const event = useSelector(({ firestore: { data } }) =>
     data.event ? { ...data.event, id } : {}
   );
+  const eventChat = useSelector(({ firebase: { ordered } }) =>
+    ordered.event_chat && ordered.event_chat[id]
+      ? ordered.event_chat[id].map(chat => ({ id: chat.key, ...chat.value }))
+      : []
+  );
+
   const { event: loading } = useSelector(
     ({
       firestore: {
@@ -32,6 +38,8 @@ function EventDetailed(props) {
     doc: id,
     storeAs: 'event',
   });
+
+  useFirebaseConnect(`event_chat/${id}`);
 
   const attendees =
     event && event.attendees ? objectToArray(event.attendees) : [];
@@ -56,12 +64,14 @@ function EventDetailed(props) {
             />
             <EventDetailedChat
               event={event}
+              profile={profile}
+              eventChat={eventChat}
               className='card event-detailed__chat'
             />
           </Col>
           <Col xs={0} sm={0} md={0} lg={8} xl={8}>
             <EventDetailedAttendees
-              className='card event-detailed__attendees'
+              className='card card--ribbon event-detailed__attendees'
               attendees={attendees}
             />
           </Col>

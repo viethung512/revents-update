@@ -1,31 +1,19 @@
 import React from 'react';
-import { Link } from '../../../app/layout/common/CustomRouter';
 import { Card, Typography, Comment, Avatar } from 'antd';
+import CommentEditor from './CommentEditor';
+import EventDetailedComment from './EventDetailedComment';
+import { createDataTree } from '../../../app/util/helper';
 
 const { Title } = Typography;
 
-const ExampleComment = ({ children }) => (
-  <Comment
-    actions={[<span key='comment-nested-reply-to'>Reply to</span>]}
-    author={<Link to='/profile/:authorId'>Han Solo</Link>}
-    avatar={
-      <Avatar
-        src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-        alt='Han Solo'
-      />
-    }
-    content={
-      <p>
-        We supply a series of design principles, practical patterns and high
-        quality design resources (Sketch and Axure).
-      </p>
-    }
-  >
-    {children}
-  </Comment>
-);
+function EventDetailedChat({
+  className,
+  eventChat,
+  profile: { displayName, avatarUrl },
+  event,
+}) {
+  eventChat = createDataTree(eventChat);
 
-function EventDetailedChat({ className }) {
   return (
     <Card
       className={className}
@@ -36,12 +24,39 @@ function EventDetailedChat({ className }) {
         </Title>
       }
     >
-      <ExampleComment>
-        <ExampleComment>
-          <ExampleComment />
-          <ExampleComment />
-        </ExampleComment>
-      </ExampleComment>
+      <Comment
+        avatar={
+          <Avatar
+            src={avatarUrl}
+            alt={displayName}
+            shape='circle'
+            size='default'
+          />
+        }
+        content={
+          event.id && (
+            <CommentEditor
+              eventId={event.id}
+              parentId={0}
+              elmId='root-comment'
+              rows={4}
+            />
+          )
+        }
+      >
+        {eventChat &&
+          eventChat.length > 0 &&
+          eventChat.map(chat => {
+            return (
+              <EventDetailedComment
+                key={chat.id}
+                chat={chat}
+                event={event}
+                elmId={chat.id}
+              />
+            );
+          })}
+      </Comment>
     </Card>
   );
 }

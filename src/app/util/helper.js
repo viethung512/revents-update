@@ -1,4 +1,5 @@
 import { format, differenceInYears } from 'date-fns';
+import arrayToTree from 'array-to-tree';
 
 export const objectToArray = object => {
   let arrayResult = [];
@@ -43,4 +44,13 @@ export const calculateAge = dateOfBirth => {
   }
 
   return differenceInYears(Date.now(), dateOfBirth * 1000);
+};
+
+export const createDataTree = dataset => {
+  const dataTree = arrayToTree(dataset, {
+    customID: 'id',
+    parentProperty: 'parentId',
+  });
+
+  return dataTree;
 };
