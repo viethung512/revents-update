@@ -266,3 +266,81 @@ const pushUserEventByKey = events => ({
 });
 
 export const clearUserEvent = () => ({ type: CLEAR_USER_EVENT });
+
+export const followUser = userToFollow => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  const user = firebase.auth().currentUser;
+  const profile = getState().firebase.profile;
+
+  const following = {
+    displayName: userToFollow.displayName,
+    avatarUrl: userToFollow.avatarUrl || '/assets/user.png',
+    city: userToFollow.city || 'Unknown City',
+  };
+
+  const follower = {
+    displayName: profile.displayName,
+    avatarUrl: profile.avatarUrl,
+    city: profile.city || 'Unknown City',
+  };
+
+  try {
+    dispatch(asyncActionStart('follow-unFollow'));
+    await firestore.set(
+      {
+        collection: 'users',
+        doc: user.uid,
+        subcollections: [{ collection: 'following', doc: userToFollow.id }],
+      },
+      following
+    );
+    await firestore.set(
+      {
+        collection: 'users',
+        doc: userToFollow.id,
+        subcollections: [{ collection: 'follower', doc: user.uid }],
+      },
+      follower
+    );
+
+    dispatch(asyncActionFinish());
+  } catch (err) {
+    console.log(err.message);
+    dispatch(asyncActionError(err));
+  }
+};
+
+export const unFollowUser = userToUnFollow => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore }
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  const user = firebase.auth().currentUser;
+
+  try {
+    dispatch(asyncActionStart('follow-unFollow'));
+    await firestore.delete({
+      collection: 'users',
+      doc: user.uid,
+      subcollections: [{ collection: 'following', doc: userToUnFollow.id }],
+    });
+
+    await firestore.delete({
+      collection: 'users',
+      doc: userToUnFollow.id,
+      subcollections: [{ collection: 'follower', doc: user.uid }],
+    });
+
+    dispatch(asyncActionFinish());
+  } catch (err) {
+    console.log(err);
+    dispatch(asyncActionError(err));
+  }
+};

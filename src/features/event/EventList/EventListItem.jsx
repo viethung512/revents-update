@@ -84,11 +84,9 @@ function EventListItem({ event }) {
             attendees &&
             attendeesData.length > 0 &&
             attendeesData.map(attendee => (
-              <Avatar
-                key={attendee.id}
-                size='default'
-                src={attendee.photoURL}
-              />
+              <Link to={`/profile/${attendee.id}`} key={attendee.id}>
+                <Avatar size='default' src={attendee.photoURL} />
+              </Link>
             ))
           }
         />

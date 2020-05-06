@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { List, Spin } from 'antd';
@@ -11,40 +11,17 @@ const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function EventList(props) {
   const dispatch = useDispatch();
-  const events = useSelector(state => state.event.events);
+  const { events, moreEvents } = useSelector(state => state.event);
   const { loading } = useSelector(state => state.async);
 
-  const [moreEvents, setMoreEvents] = useState(true);
-  const [loadedEvents, setLoadedEvents] = useState([]);
+  const initEvent = async () => await dispatch(getEventsForDashboard());
 
   useEffect(() => {
-    const initialEvents = async () => {
-      const next = dispatch(getEventsForDashboard());
-
-      if (next && next.docs && next.docs.length >= 1) {
-        setMoreEvents(true);
-      }
-    };
-
-    initialEvents();
-
-    return () => {
-      setLoadedEvents([]);
-      dispatch(clearEvents());
-    };
+    dispatch(clearEvents());
+    initEvent();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (loadedEvents.length === 0 && events.length !== 0) {
-      setLoadedEvents(events);
-    } else {
-      setLoadedEvents([...loadedEvents, ...events]);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [events.length]);
 
   useFirestoreConnect({
     collection: 'events',
@@ -53,11 +30,7 @@ function EventList(props) {
 
   const handleLoadMore = async () => {
     const lastEvent = events[events.length - 1];
-    let next = await dispatch(getEventsForDashboard(lastEvent));
-
-    if (!(next && next.docs && next.docs.length > 1)) {
-      setMoreEvents(false);
-    }
+    await dispatch(getEventsForDashboard(lastEvent));
   };
 
   return (
@@ -69,10 +42,10 @@ function EventList(props) {
     >
       <List
         itemLayout='vertical'
-        dataSource={loadedEvents}
+        dataSource={events}
         renderItem={event => <EventListItem event={event} />}
       >
-        {loading && moreEvents && (
+        {loading && moreEvents && events.length > 0 && (
           <div className='loading-container'>
             <Spin indicator={loadingIcon} />
           </div>

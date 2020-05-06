@@ -86,7 +86,7 @@ function PhotosPage(props) {
           <PhotoItem src={avatarUrl} isMainPhoto={true} />
         </Col>
         {photos &&
-          photos.length > 1 &&
+          photos.length > 0 &&
           photos
             .filter(photo => photo.url !== avatarUrl)
             .map(photo => (

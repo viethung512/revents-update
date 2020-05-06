@@ -10,7 +10,7 @@ import UserDetailedEvent from './UserDetailedEvent';
 import UserDetailedSidebar from './UserDetailedSidebar';
 import { useSelector, useDispatch } from 'react-redux';
 import Loading from '../../../app/layout/common/Loading';
-import { clearUserEvent } from '../user.actions';
+import { clearUserEvent, followUser, unFollowUser } from '../user.actions';
 
 function UserDetailed(props) {
   const { id } = useParams();
@@ -49,6 +49,19 @@ function UserDetailed(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleFollowUser = () => {
+    if (user.id) {
+      console.log(user);
+      dispatch(followUser(user));
+    }
+  };
+
+  const handleUnFollowUser = () => {
+    if (user.id) {
+      dispatch(unFollowUser(user));
+    }
+  };
+
   return (
     <div className='user-detailed'>
       <Loading color='rgb(0, 181, 173)' loading={loading}>
@@ -60,7 +73,11 @@ function UserDetailed(props) {
             <UserDetailedEvent user={user} auth={auth} />
           </Col>
           <Col xs={24} sm={24} md={24} lg={4} xl={4}>
-            <UserDetailedSidebar user={user} />
+            <UserDetailedSidebar
+              user={user}
+              followUser={handleFollowUser}
+              unFollowUser={handleUnFollowUser}
+            />
           </Col>
         </Row>
       </Loading>

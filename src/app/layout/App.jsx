@@ -13,6 +13,7 @@ import EventDetailed from '../../features/event/EventDetailed/EventDetailed';
 import NotFound from './NotFound';
 import SettingDashboard from '../../features/user/Settings/SettingDashboard';
 import UserDetailed from '../../features/user/UserDetailed/UserDetailed';
+import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
 
 const { Content } = Layout;
 
@@ -33,6 +34,7 @@ function App() {
                   <Route path='/event/:id' component={EventDetailed} />
                   <Route path='/profile/:id' component={UserDetailed} />
                   <Route path='/settings' component={SettingDashboard} />
+                  <Route path='/people' component={PeopleDashboard} />
                   <Route
                     component={() => (
                       <NotFound

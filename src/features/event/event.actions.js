@@ -7,7 +7,11 @@ import {
 import { toastr } from 'react-redux-toastr';
 import { createNewEvent } from '../../app/util/helper';
 import { closeDrawer } from '../drawer/drawer.actions';
-import { FETCH_EVENTS, CLEAR_EVENTS } from './event.constants';
+import {
+  FETCH_EVENTS,
+  CLEAR_EVENTS,
+  FETCH_EVENT_FINISH,
+} from './event.constants';
 
 export const createEvent = event => async (
   dispatch,
@@ -224,13 +228,18 @@ export const getEventsForDashboard = lastEvent => async (
     let querySnap = await query.get();
 
     if (querySnap.docs.length === 0) {
+      dispatch({ type: FETCH_EVENT_FINISH });
       dispatch(asyncActionFinish());
       return;
     }
 
-    const events = querySnap.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    const events = await querySnap.docs.map(doc => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
     dispatch({ type: FETCH_EVENTS, payload: { events } });
     dispatch(asyncActionFinish());
+
     return querySnap;
   } catch (err) {
     console.log(err);
