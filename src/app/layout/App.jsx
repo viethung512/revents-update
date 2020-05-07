@@ -14,6 +14,9 @@ import NotFound from './NotFound';
 import SettingDashboard from '../../features/user/Settings/SettingDashboard';
 import UserDetailed from '../../features/user/UserDetailed/UserDetailed';
 import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard';
+import EventActivity from '../../features/event/EventActivity/EventActivity';
+
+import { UserIsAuthenticated } from '../../features/auth/authWrapper';
 
 const { Content } = Layout;
 
@@ -30,11 +33,21 @@ function App() {
               <NavBar />
               <Content className='content'>
                 <Switch>
-                  <Route path='/event' component={EventDashboard} exact />
-                  <Route path='/event/:id' component={EventDetailed} />
-                  <Route path='/profile/:id' component={UserDetailed} />
+                  <Route path='/events' component={EventDashboard} exact />
+                  <Route path='/events/:id' component={EventDetailed} />
+                  <Route
+                    path='/profile/:id'
+                    component={UserIsAuthenticated(UserDetailed)}
+                  />
                   <Route path='/settings' component={SettingDashboard} />
-                  <Route path='/people' component={PeopleDashboard} />
+                  <Route
+                    path='/people'
+                    component={UserIsAuthenticated(PeopleDashboard)}
+                  />
+                  <Route
+                    path='/activity'
+                    component={UserIsAuthenticated(EventActivity)}
+                  />
                   <Route
                     component={() => (
                       <NotFound

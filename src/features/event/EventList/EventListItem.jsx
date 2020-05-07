@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import './style.css';
 import { List, Avatar, Card, Typography, Button, Tag } from 'antd';
-
 import { ClockCircleFilled, EnvironmentFilled } from '@ant-design/icons';
+import LazyLoad from 'react-lazyload';
 import IconText from '../../../app/layout/common/IconText';
 import { Link } from '../../../app/layout/common/CustomRouter';
 import { objectToArray, formatEventDate } from '../../../app/util/helper';
@@ -38,7 +38,7 @@ function EventListItem({ event }) {
           <Tag
             color='red'
             className='ribbon ribbon--danger'
-            style={{ right: -20 }}
+            style={{ right: '-12px' }}
           >
             This event has been cancelled
           </Tag>
@@ -46,9 +46,16 @@ function EventListItem({ event }) {
 
         <Card.Meta
           className='event__header'
-          avatar={<Avatar size={80} src={hostPhotoURL || '/assets/user.png'} />}
+          avatar={
+            <LazyLoad
+              height={300}
+              placeholder={<Avatar size={80} src='/assets/user.png' />}
+            >
+              <Avatar size={80} src={hostPhotoURL || '/assets/user.png'} />
+            </LazyLoad>
+          }
           title={
-            <Link to={`/event/${id}`}>
+            <Link to={`/events/${id}`}>
               <Title level={4}>{title}</Title>
             </Link>
           }
@@ -85,7 +92,12 @@ function EventListItem({ event }) {
             attendeesData.length > 0 &&
             attendeesData.map(attendee => (
               <Link to={`/profile/${attendee.id}`} key={attendee.id}>
-                <Avatar size='default' src={attendee.photoURL} />
+                <LazyLoad
+                  height={100}
+                  placeholder={<Avatar size='default' src='/assets/user.png' />}
+                >
+                  <Avatar size='default' src={attendee.photoURL} />
+                </LazyLoad>
               </Link>
             ))
           }
@@ -101,7 +113,7 @@ function EventListItem({ event }) {
               }}
             >
               <Text type='secondary'>{description}</Text>
-              <Link to={`/event/${id}`}>
+              <Link to={`/events/${id}`}>
                 <Button
                   type='primary'
                   size='large'

@@ -21,43 +21,50 @@ function EventActivity(props) {
 
   return (
     <Affix offsetTop={100}>
-      <List
-        style={{ backgroundColor: '#fff' }}
-        itemLayout='horizontal'
-        header={
-          <Title level={4} style={{ marginBottom: 0, padding: '0 12px' }}>
-            Recent Activity
-          </Title>
-        }
-        bordered
-        dataSource={activities}
-        renderItem={item => (
-          <List.Item style={{ padding: 12 }}>
-            <List.Item.Meta
-              avatar={<Avatar src={item.photoURL} alt={item.hostedBy} />}
-              title={item.type === 'newEvent' ? 'New Event' : 'Event Cancelled'}
-              description={
-                <Text>
-                  <Link to={`/profile/${item.hostUid}`}>{item.hostedBy}</Link>{' '}
-                  {item.type === 'newEvent' ? 'is hosting ' : 'has cancelled '}
-                  <Link to={`/event/${item.eventId}`}>{item.title}</Link>
-                  {item.timestamp && (
-                    <Text
-                      style={{
-                        marginLeft: 4,
-                        fontSize: 10,
-                        color: 'rgba(0, 0, 0, 0.2)',
-                      }}
-                    >
-                      {formatDistance(item.timestamp.toDate(), Date.now())} ago
-                    </Text>
-                  )}
-                </Text>
-              }
-            />
-          </List.Item>
-        )}
-      />
+      <div className='event-activity'>
+        <List
+          style={{ backgroundColor: '#fff' }}
+          itemLayout='horizontal'
+          header={
+            <Title level={4} style={{ marginBottom: 0, padding: '0 12px' }}>
+              Recent Activity
+            </Title>
+          }
+          bordered
+          dataSource={activities}
+          renderItem={item => (
+            <List.Item style={{ padding: 12 }}>
+              <List.Item.Meta
+                avatar={<Avatar src={item.photoURL} alt={item.hostedBy} />}
+                title={
+                  item.type === 'newEvent' ? 'New Event' : 'Event Cancelled'
+                }
+                description={
+                  <Text>
+                    <Link to={`/profile/${item.hostUid}`}>{item.hostedBy}</Link>{' '}
+                    {item.type === 'newEvent'
+                      ? 'is hosting '
+                      : 'has cancelled '}
+                    <Link to={`/event/${item.eventId}`}>{item.title}</Link>
+                    {item.timestamp && (
+                      <Text
+                        style={{
+                          marginLeft: 4,
+                          fontSize: 10,
+                          color: 'rgba(0, 0, 0, 0.2)',
+                        }}
+                      >
+                        {formatDistance(item.timestamp.toDate(), Date.now())}{' '}
+                        ago
+                      </Text>
+                    )}
+                  </Text>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      </div>
     </Affix>
   );
 }

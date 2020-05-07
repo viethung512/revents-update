@@ -2,10 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
+import UnAuthModal from './UnAuthModal';
 
 const modalLookup = {
   LoginModal,
-  RegisterModal
+  RegisterModal,
+  UnAuthModal,
 };
 
 function ModalManager(props) {

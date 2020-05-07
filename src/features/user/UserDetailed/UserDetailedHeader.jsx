@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Avatar, Typography } from 'antd';
+import LazyLoad from 'react-lazyload';
 import { calculateAge } from '../../../app/util/helper';
 
 const { Title, Text } = Typography;
@@ -21,7 +22,24 @@ function UserDetailedHeader({
     <Card className='card'>
       <Card.Meta
         avatar={
-          <Avatar size={150} shape='circle' src={avatarUrl} alt={displayName} />
+          <LazyLoad
+            height={300}
+            placeholder={
+              <Avatar
+                size={150}
+                shape='circle'
+                src='/assets/user.png'
+                alt={displayName}
+              />
+            }
+          >
+            <Avatar
+              size={150}
+              shape='circle'
+              src={avatarUrl}
+              alt={displayName}
+            />
+          </LazyLoad>
         }
         title={title}
         description={description}

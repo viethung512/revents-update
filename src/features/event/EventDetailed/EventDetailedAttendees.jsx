@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from '../../../app/layout/common/CustomRouter';
 import { Card, List, Avatar, Typography, Tag } from 'antd';
+import LazyLoad from 'react-lazyload';
+import { Link } from '../../../app/layout/common/CustomRouter';
 
 const { Text } = Typography;
 
@@ -28,13 +29,26 @@ function EventDetailedAttendees({ className, attendees }) {
               <Tag
                 className='ribbon ribbon--warning'
                 color='orange'
-                style={{ top: 0 }}
+                style={{ top: 0, right: '-24px' }}
               >
                 Host
               </Tag>
             )}
             <List.Item.Meta
-              avatar={<Avatar shape='square' size='large' src={photoURL} />}
+              avatar={
+                <LazyLoad
+                  height={150}
+                  placeholder={
+                    <Avatar
+                      shape='square'
+                      size='large'
+                      src='/assets/user.png'
+                    />
+                  }
+                >
+                  <Avatar shape='square' size='large' src={photoURL} />
+                </LazyLoad>
+              }
               title={
                 <Link to={`/profile/${id}`}>
                   <Text>{displayName}</Text>

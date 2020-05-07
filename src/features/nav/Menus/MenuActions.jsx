@@ -3,15 +3,17 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'antd';
 import { openDrawer } from '../../drawer/drawer.actions';
 
-function MenuActions({ className }) {
+function MenuActions(props) {
   const dispatch = useDispatch();
+
+  const createEvent = () => dispatch(openDrawer('EventActionDrawer'));
 
   return (
     <Button
       size='large'
-      className={`${className} btn btn--success`}
-      style={{ border: '2px solid #fff' }}
-      onClick={() => dispatch(openDrawer('EventActionDrawer'))}
+      className='btn btn--success'
+      style={{ border: '2px solid #fff', color: '#fff' }}
+      onClick={createEvent}
     >
       Create Event
     </Button>

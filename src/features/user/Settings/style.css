@@ -35,7 +35,7 @@
   color: #dcddde !important;
 }
 
-@media (max-width: 750px) {
+@media (max-width: 970px) {
   .setting-dashboard {
     padding: 24px 0;
   }

@@ -15,7 +15,7 @@ code {
 .btn {
   border-radius: 5px;
   font-weight: 400 !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .btn.btn--primary,
@@ -30,7 +30,7 @@ code {
 .btn.btn--default:focus {
   background-color: rgb(224, 225, 226);
   border-color: rgb(224, 225, 226);
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.6) !important;
 }
 
 .btn.btn--warning,

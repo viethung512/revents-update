@@ -1,24 +1,34 @@
 import React from 'react';
-import { Link } from '../../../app/layout/common/CustomRouter';
-import { Dropdown, Button, Avatar, Menu } from 'antd';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Avatar, Button, Dropdown, Menu, Typography } from 'antd';
 import {
   DownOutlined,
-  PlusOutlined,
-  CalendarFilled,
-  UserSwitchOutlined,
-  UserOutlined,
-  SettingFilled,
   LogoutOutlined,
+  SettingFilled,
+  UserOutlined,
+  UserSwitchOutlined,
+  CalendarFilled,
+  PlusOutlined,
 } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
 import { openDrawer } from '../../drawer/drawer.actions';
 
-function SignedInMenu({ logout, className, profile, auth }) {
-  const dispatch = useDispatch();
-  const { displayName, avatarUrl = '/assets/user.png' } = profile;
+const { Title } = Typography;
 
-  const menu = () => (
-    <Menu className={className}>
+const LoggedInMenu = ({
+  profile: { displayName, avatarUrl = '/assets/user.png' },
+  logout,
+  auth,
+}) => {
+  const dispatch = useDispatch();
+
+  const loggedInMenu = (
+    <Menu>
+      <Menu.Item>
+        <Title level={4} className='auth-info--mobile'>
+          {displayName}
+        </Title>
+      </Menu.Item>
       <Menu.Item
         key='1'
         onClick={() => dispatch(openDrawer('EventActionDrawer'))}
@@ -53,25 +63,26 @@ function SignedInMenu({ logout, className, profile, auth }) {
       </Menu.Item>
     </Menu>
   );
-
   return (
-    <Dropdown trigger={['click']} overlay={menu} icon={<DownOutlined />}>
-      <Button
-        size='large'
-        className='header__auth btn'
-        style={{ border: 'none' }}
-      >
+    <Dropdown
+      trigger={['click']}
+      overlay={loggedInMenu}
+      icon={<DownOutlined />}
+    >
+      <Button size='large' className='auth-button-info'>
         <Avatar
           size='small'
           src={avatarUrl}
           shape='circle'
           style={{ marginRight: 12 }}
         />
-        {displayName}
-        <DownOutlined />
+        <div className='auth-info'>
+          <span>{displayName}</span>
+          <DownOutlined />
+        </div>
       </Button>
     </Dropdown>
   );
-}
+};
 
-export default SignedInMenu;
+export default LoggedInMenu;

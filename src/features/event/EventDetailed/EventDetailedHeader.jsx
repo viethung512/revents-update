@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { formatEventDate } from '../../../app/util/helper';
 import { openDrawer } from '../../drawer/drawer.actions';
 import { goingToEvent, cancelGoingToEvent } from '../event.actions';
+import { openModal } from '../../modal/modal.actions';
 
 const { Title, Text } = Typography;
 
@@ -89,6 +90,7 @@ function EventDetailedHeader({
           size='large'
           className='btn btn--primary'
           style={{ marginLeft: 12, float: 'left' }}
+          onClick={() => dispatch(openModal('UnAuthModal'))}
         >
           JOIN THIS EVENT
         </Button>,

@@ -62,12 +62,14 @@ function EventDetailed(props) {
               event={event}
               className='card event-detailed__info'
             />
-            <EventDetailedChat
-              event={event}
-              profile={profile}
-              eventChat={eventChat}
-              className='card event-detailed__chat'
-            />
+            {authenticatedId && (
+              <EventDetailedChat
+                event={event}
+                profile={profile}
+                eventChat={eventChat}
+                className='card event-detailed__chat'
+              />
+            )}
           </Col>
           <Col xs={0} sm={0} md={0} lg={8} xl={8}>
             <EventDetailedAttendees

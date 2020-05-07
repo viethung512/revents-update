@@ -65,7 +65,7 @@ const EventAction = () => {
       dispatch(updateEvent(newEvent));
     } else {
       const createdEvent = await dispatch(createEvent(values));
-      history.push(`/event/${createdEvent.id}`);
+      history.push(`/events/${createdEvent.id}`);
     }
   };
 

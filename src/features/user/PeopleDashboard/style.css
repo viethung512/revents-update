@@ -1,3 +1,9 @@
 .people-dashboard {
-  padding: 24px;
+  padding: 36px;
+}
+
+@media (max-width: 750px) {
+  .people-dashboard {
+    padding: 36px 0;
+  }
 }

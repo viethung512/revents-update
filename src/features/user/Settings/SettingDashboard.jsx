@@ -36,7 +36,10 @@ function SettingDashboard(props) {
   return (
     <div className='setting-dashboard'>
       <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={20} xl={20}>
+        <Col xs={24} sm={24} md={6} lg={4} xl={4}>
+          <SettingNav className='setting-dashboard__nav' />
+        </Col>
+        <Col xs={24} sm={24} md={18} lg={20} xl={20}>
           <Switch>
             <Route
               path='/settings/basic'
@@ -68,9 +71,6 @@ function SettingDashboard(props) {
             <Route path='/settings/photos' component={PhotosPage} exact />
             <Route component={() => <Redirect to='/settings/basic' />} exact />
           </Switch>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={4} xl={4}>
-          <SettingNav className='setting-dashboard__nav' />
         </Col>
       </Row>
     </div>

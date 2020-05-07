@@ -9,7 +9,7 @@ function NotFound({ title }) {
       title='404'
       subTitle={title}
       extra={
-        <Link to='/event'>
+        <Link to='/events'>
           <Button
             style={{
               backgroundColor: '#2185d0',

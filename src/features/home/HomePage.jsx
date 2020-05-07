@@ -17,7 +17,7 @@ function HomePage(props) {
         />
         <h1 className='homepage__header-title'>Re-vents</h1>
       </div>
-      <Link to='/event'>
+      <Link to='/events'>
         <Button
           icon={<ArrowRightOutlined className='homepage__action-icon' />}
           shape='round'

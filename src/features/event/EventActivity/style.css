@@ -1,3 +1,9 @@
 /* .event-activity {
   padding: 24px;
 } */
+
+@media (max-width: 750px) {
+  .event-activity {
+    padding: 24px;
+  }
+}
