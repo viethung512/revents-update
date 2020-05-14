@@ -1,9 +1,11 @@
-#Re-vents
+# Re-vents
 is a small social app allow user schedule for event (version update)
+
 Tech:
- - React
- - Redux
- - Firebase - Firestore
+ - [React](https://reactjs.org/)
+ - [Redux](https://redux.js.org/)
+ - [Firebase-Firestore](https://firebase.google.com/)
+ - [React Router](https://reacttraining.com/react-router/web/guides/quick-start)
 
 ## 1. How to install
 
@@ -13,7 +15,9 @@ Using git to clone repository and install: can clone with ssh or https:
 
 ```
 git clone git@github.com:viethung512/revents-update.git revents-update (with ssh)
+```
 or
+```
 git clone https://github.com/viethung512/revents-update.git revents-update (with https)
 ```
 
