@@ -38,7 +38,10 @@ npm start (start project with development mode)
 npm run build (buidl project in production)
 ```
 ## 2. Demo
-This is the demo: [Re-vents](https://revents-512.web.app/events)
+This is the demo: [Re-vents](https://revents-512.web.app/)
 
 This project was made by [Ngô Việt Hưng](https://github.com/viethung512).
+
 You also can see the original project [here](https://github.com/viethung512/revents)
+
+Demo of the original version [original version](https://revents-274714.web.app/)
