@@ -6,6 +6,7 @@ Tech:
  - [Redux](https://redux.js.org/)
  - [Firebase-Firestore](https://firebase.google.com/)
  - [React Router](https://reacttraining.com/react-router/web/guides/quick-start)
+ - [Ant Design](https://ant.design/)
 
 ## 1. How to install
 
